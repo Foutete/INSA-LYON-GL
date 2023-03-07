@@ -10,13 +10,15 @@ const string Etiquettes[] = {"OPENPAR", "CLOSEPAR", "PLUS",  "MULT",
 
 class Symbole {
  public:
-  Symbole(int i) : ident(i) {}
+  Symbole(int i, bool t) : ident(i), terminal(t) {}
   virtual ~Symbole() {}
   operator int() const { return ident; }
   virtual void Affiche();
+  bool isTerminal() { return terminal; }
 
  protected:
   int ident;
+  bool terminal;
 };
 
 class Entier : public Symbole {

@@ -30,7 +30,6 @@ void Automate::run() {
   while (syntaxe) {
     if (*s != FIN) {
       s = lexer->Consulter();
-      lexer->Avancer();
     }
     syntaxe = !pileEtats.back()->transition(*this, s);
   }

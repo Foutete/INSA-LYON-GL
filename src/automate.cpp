@@ -17,12 +17,20 @@ void Automate::reduction(Symbole* s, int n) {
     delete (pileEtats.back());
     pileEtats.pop_back();
   }
-  pileEtats.back()->transition(*this, s);  // TODO ->transition(*this,s);
+  pileEtats.back()->transition(*this, s);
 }
 
-void Automate::run() {}
+void Automate::run() {
+    
+}
 
 void Automate::popAndDestroySymbol() {
   delete (pileSymboles.back());
   pileSymboles.pop_back();
+}
+
+Entier * Automate::popSymbol() {
+    Entier * entier = (Entier*) pileSymboles.back();
+    pileSymboles.pop_back();
+    return entier;
 }

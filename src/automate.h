@@ -11,6 +11,7 @@ class Automate {
  public:
   void run();
   void popAndDestroySymbol();
+  Entier * popSymbol();
   void decalage(Symbole* s, State* state);
   void reduction(Symbole* s, int n);
   Automate(Lexer * lexer);

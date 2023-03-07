@@ -11,12 +11,15 @@ OBJECTS := $(patsubst $(SRC)/%.cpp, $(OBJ)/%.o, $(SOURCES))
 DEPENDS := $(patsubst $(SRC)/%.cpp, $(OBJ)/%.d, $(SOURCES))
 EXECUTABLE := automate
 
-.PHONY: all clean executable
+.PHONY: all clean debug executable
 
 # default
 all:$(EXECUTABLE)
 
 executable : $(EXECUTABLE)
+
+debug : CXXFLAGS += -g
+debug : all
 
 $(EXECUTABLE):$(OBJECTS)
 	$(CXX) -o $(EXECUTABLE) $^ $(CXXFLAGS)

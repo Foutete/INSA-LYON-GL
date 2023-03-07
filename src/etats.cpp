@@ -18,9 +18,12 @@ bool E0::transition(Automate& automate, Symbole* s) {
     case INT:
       automate.decalage(s, new E3);
       break;
+
     case OPENPAR:
       automate.decalage(s, new E2);
       break;
+    default: 
+      return true;
   }
   return false;
 }
@@ -30,11 +33,15 @@ bool E1::transition(Automate& automate, Symbole* s) {
     case PLUS:
       automate.decalage(s, new E4);
       break;
+
     case MULT:
       automate.decalage(s, new E5);
       break;
+
     case FIN:
       cout << "Fin";
+    default:
+      return true;
   }
   return false;
 }
@@ -44,9 +51,12 @@ bool E2::transition(Automate& automate, Symbole* s) {
     case INT:
       automate.decalage(s, new E3);
       break;
+
     case OPENPAR:
       automate.decalage(s, new E2);
       break;
+    default:
+      return true;
   }
   return false;
 }
@@ -59,21 +69,27 @@ bool E3::transition(Automate& automate, Symbole* s) {
       Expr * exp = new Expr(e1->getValeur());
       automate.reduction(exp, 1);
       break;
+
     case MULT:
       Entier * e1 = automate.popSymbol();
       Expr * exp = new Expr(e1->getValeur());
       automate.reduction(exp, 1);
       break;
+
     case CLOSEPAR:
       Entier * e1 = automate.popSymbol();
       Expr * exp = new Expr(e1->getValeur());
       automate.reduction(exp, 1);
       break;
+
     case FIN:
       Entier * e1 = automate.popSymbol();
       Expr * exp = new Expr(e1->getValeur());
       automate.reduction(exp, 1);
       break;
+
+    default:
+      return true;
   }
   return false;
 }
@@ -83,9 +99,13 @@ bool E4::transition(Automate& automate, Symbole* s) {
     case INT:
       automate.decalage(s, new E3);
       break;
+
     case OPENPAR:
       automate.decalage(s, new E2);
       break;
+
+    default:
+      return true;
   }
   return false;
 }
@@ -95,9 +115,12 @@ bool E5::transition(Automate& automate, Symbole* s) {
     case INT:
       automate.decalage(s, new E3);
       break;
+
     case OPENPAR:
       automate.decalage(s, new E2);
       break;
+    default:
+      return true;
   }
   return false;
 }
@@ -107,12 +130,17 @@ bool E6::transition(Automate& automate, Symbole* s) {
     case PLUS:
       automate.decalage(s, new E4);
       break;
+
     case MULT:
       automate.decalage(s, new E5);
       break;
+
     case CLOSEPAR:
       automate.decalage(s, new E9);
       break;
+
+    default:
+      return true;
   }
   return false;
 }
@@ -127,9 +155,11 @@ bool E7::transition(Automate& automate, Symbole* s) {
       Expr * exp = new Expr(e2->getValeur() + e1->getValeur());
       automate.reduction(exp, 3 /* 3 symboles à dépiler */);
       break;
+
     case MULT:
       automate.decalage(s, new E5);
       break;
+
     case CLOSEPAR:
       Entier * e1 = automate.popSymbol(); // E de droite
       automate.popAndDestroySymbol();  // +
@@ -137,6 +167,7 @@ bool E7::transition(Automate& automate, Symbole* s) {
       Expr * exp = new Expr(e2->getValeur() + e1->getValeur());
       automate.reduction(exp, 3 /* 3 symboles à dépiler */);
       break;
+
     case FIN:
       Entier * e1 = automate.popSymbol(); // E de droite
       automate.popAndDestroySymbol();  // +
@@ -144,6 +175,9 @@ bool E7::transition(Automate& automate, Symbole* s) {
       Expr * exp = new Expr(e2->getValeur() + e1->getValeur());
       automate.reduction(exp, 3 /* 3 symboles à dépiler */);
       break;
+
+    default:
+      return true;
   }
   return false;
 }
@@ -158,6 +192,7 @@ bool E8::transition(Automate& automate, Symbole* s) {
       Expr * exp = new Expr(e2->getValeur() * e1->getValeur());
       automate.reduction(exp, 3 /* 3 symboles à dépiler */);
       break;
+
     case MULT:
       Entier * e1 = automate.popSymbol(); // E de droite
       automate.popAndDestroySymbol();  // *
@@ -165,6 +200,7 @@ bool E8::transition(Automate& automate, Symbole* s) {
       Expr * exp = new Expr(e2->getValeur() * e1->getValeur());
       automate.reduction(exp, 3 /* 3 symboles à dépiler */);      
       break;
+
     case CLOSEPAR:
       Entier * e1 = automate.popSymbol(); // E de droite
       automate.popAndDestroySymbol();  // *
@@ -172,6 +208,7 @@ bool E8::transition(Automate& automate, Symbole* s) {
       Expr * exp = new Expr(e2->getValeur() * e1->getValeur());
       automate.reduction(exp, 3 /* 3 symboles à dépiler */);
       break;
+
     case FIN:
       Entier * e1 = automate.popSymbol(); // E de droite
       automate.popAndDestroySymbol();  // *
@@ -179,6 +216,9 @@ bool E8::transition(Automate& automate, Symbole* s) {
       Expr * exp = new Expr(e2->getValeur() * e1->getValeur());
       automate.reduction(exp, 3 /* 3 symboles à dépiler */);
       break;
+
+    default:
+      return true;
   }
   return false;
 }
@@ -193,6 +233,7 @@ bool E9::transition(Automate& automate, Symbole* s) {
       Expr * exp = new Expr(e->getValeur());
       automate.reduction(exp, 3 /* 3 symboles à dépiler */);
       break;
+
     case MULT:
       automate.popAndDestroySymbol();  // )
       Entier * e = automate.popSymbol(); // E
@@ -200,6 +241,7 @@ bool E9::transition(Automate& automate, Symbole* s) {
       Expr * exp = new Expr(e->getValeur());
       automate.reduction(exp, 3 /* 3 symboles à dépiler */);
       break;
+
     case CLOSEPAR:
       automate.popAndDestroySymbol();  // )
       Entier * e = automate.popSymbol(); // E
@@ -207,6 +249,7 @@ bool E9::transition(Automate& automate, Symbole* s) {
       Expr * exp = new Expr(e->getValeur());
       automate.reduction(exp, 3 /* 3 symboles à dépiler */);
       break;
+
     case FIN:
       automate.popAndDestroySymbol();  // )
       Entier * e = automate.popSymbol(); // E
@@ -214,6 +257,9 @@ bool E9::transition(Automate& automate, Symbole* s) {
       Expr * exp = new Expr(e->getValeur());
       automate.reduction(exp, 3 /* 3 symboles à dépiler */);
       break;
+
+    default:
+      return true;
   }
   return false;
 }

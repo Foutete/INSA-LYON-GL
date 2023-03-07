@@ -32,7 +32,7 @@ void Automate::run() {
       s = lexer->Consulter();
       lexer->Avancer();
     }
-    syntaxe = pileEtats.back()->transition(*this, s);
+    syntaxe = !pileEtats.back()->transition(*this, s);
   }
   if (*pileSymboles.back() == ERREUR) {
     std::cout << "Erreur syntaxique" << std::endl;

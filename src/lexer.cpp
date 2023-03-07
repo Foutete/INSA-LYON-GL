@@ -2,8 +2,8 @@
 
 Symbole* Lexer::Consulter() {
   if (!tampon) {
-    if (tete == (int) flux.length())
-      tampon = new Symbole(FIN, false);
+    if (tete == (int)flux.length())
+      tampon = new Symbole(FIN, true);
     else {
       switch (flux[tete]) {
         case '(':
@@ -33,7 +33,7 @@ Symbole* Lexer::Consulter() {
             tete = tete + i;
             tampon = new Entier(resultat);
           } else {
-            tampon = new Symbole(ERREUR, false);
+            tampon = new Symbole(ERREUR, true);
           }
       }
     }

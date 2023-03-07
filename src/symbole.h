@@ -23,7 +23,7 @@ class Symbole {
 
 class Entier : public Symbole {
  public:
-  Entier(int v) : Symbole(INT), valeur(v) {}
+  Entier(int v) : Symbole(INT, true), valeur(v) {}
   ~Entier() {}
   virtual void Affiche();
 

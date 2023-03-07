@@ -9,6 +9,8 @@ class State;
 
 class Automate {
  public:
+  void run();
+  void popAndDestroySymbol();
   void decalage(Symbole* s, State* state);
   void reduction(Symbole* s, int n);
   Automate(Lexer * lexer);

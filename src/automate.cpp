@@ -13,4 +13,21 @@ void Automate::decalage(Symbole* s, State* state) {
     }
 }
 
-void Automate::reduction(Symbole* s, int n) {}
+void Automate::reduction(Symbole* s, int n) {
+
+    for (int i = 0; i < n; i++) {
+        delete(pileEtats.back());
+        pileEtats.pop_back();
+    }
+    pileEtats.back(); // TODO ->transition(*this,s);
+}
+
+void Automate::run() {
+
+}
+
+void Automate::popAndDestroySymbol() {
+    delete(pileSymboles.back());
+    pileSymboles.pop_back();   
+}
+

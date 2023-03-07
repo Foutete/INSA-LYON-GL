@@ -1,9 +1,12 @@
 #include <iostream>
 
 #include "lexer.h"
+#include "automate.h"
 
 int main(void) {
-  string chaine("(1+34)*123");
+  string chaine;
+  cout << "Entrez l'expression à calculer : " << endl;
+  cin >> chaine;
 
   Lexer l(chaine);
 
@@ -13,5 +16,9 @@ int main(void) {
     cout << endl;
     l.Avancer();
   }
+
+  Automate * automate = new Automate(&l);
+  automate->run();
+
   return 0;
 }

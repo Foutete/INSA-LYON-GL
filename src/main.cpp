@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include "lexer.h"
 #include "automate.h"
+#include "lexer.h"
 
 int main(void) {
   string chaine;
@@ -10,14 +10,7 @@ int main(void) {
 
   Lexer l(chaine);
 
-  Symbole* s;
-  while (*(s = l.Consulter()) != FIN) {
-    s->Affiche();
-    cout << endl;
-    l.Avancer();
-  }
-
-  Automate * automate = new Automate(&l);
+  Automate* automate = new Automate(&l);
   automate->run();
 
   return 0;

@@ -22,7 +22,8 @@ bool E0::transition(Automate& automate, Symbole* s) {
     case OPENPAR:
       automate.decalage(s, new E2);
       break;
-    default: 
+    default:
+      automate.decalage(new Symbole(ERREUR, false), nullptr);
       return true;
   }
   return false;
@@ -41,6 +42,7 @@ bool E1::transition(Automate& automate, Symbole* s) {
     case FIN:
       cout << "Fin";
     default:
+      automate.decalage(new Symbole(ERREUR, false), nullptr);
       return true;
   }
   return false;
@@ -56,6 +58,7 @@ bool E2::transition(Automate& automate, Symbole* s) {
       automate.decalage(s, new E2);
       break;
     default:
+      automate.decalage(new Symbole(ERREUR, false), nullptr);
       return true;
   }
   return false;
@@ -63,32 +66,21 @@ bool E2::transition(Automate& automate, Symbole* s) {
 
 bool E3::transition(Automate& automate, Symbole* s) {
   switch (*s) {
+    Entier* e1;
+    Expr* exp;
+
     // règle 5 : E -> val
     case PLUS:
-      Entier * e1 = automate.popSymbol();
-      Expr * exp = new Expr(e1->getValeur());
-      automate.reduction(exp, 1);
-      break;
-
     case MULT:
-      Entier * e1 = automate.popSymbol();
-      Expr * exp = new Expr(e1->getValeur());
-      automate.reduction(exp, 1);
-      break;
-
     case CLOSEPAR:
-      Entier * e1 = automate.popSymbol();
-      Expr * exp = new Expr(e1->getValeur());
-      automate.reduction(exp, 1);
-      break;
-
     case FIN:
-      Entier * e1 = automate.popSymbol();
-      Expr * exp = new Expr(e1->getValeur());
+      e1 = automate.popSymbol();
+      exp = new Expr(e1->getValeur());
       automate.reduction(exp, 1);
       break;
 
     default:
+      automate.decalage(new Symbole(ERREUR, false), nullptr);
       return true;
   }
   return false;
@@ -105,6 +97,7 @@ bool E4::transition(Automate& automate, Symbole* s) {
       break;
 
     default:
+      automate.decalage(new Symbole(ERREUR, false), nullptr);
       return true;
   }
   return false;
@@ -120,6 +113,7 @@ bool E5::transition(Automate& automate, Symbole* s) {
       automate.decalage(s, new E2);
       break;
     default:
+      automate.decalage(new Symbole(ERREUR, false), nullptr);
       return true;
   }
   return false;
@@ -140,6 +134,7 @@ bool E6::transition(Automate& automate, Symbole* s) {
       break;
 
     default:
+      automate.decalage(new Symbole(ERREUR, false), nullptr);
       return true;
   }
   return false;
@@ -147,12 +142,18 @@ bool E6::transition(Automate& automate, Symbole* s) {
 
 bool E7::transition(Automate& automate, Symbole* s) {
   switch (*s) {
+    Entier* e1;
+    Entier* e2;
+    Expr* exp;
+
     // Règle 2 : E -> E + E
     case PLUS:
-      Entier * e1 = automate.popSymbol(); // E de droite
+    case CLOSEPAR:
+    case FIN:
+      e1 = automate.popSymbol();       // E de droite
       automate.popAndDestroySymbol();  // +
-      Entier * e2 = automate.popSymbol(); // E de gauche
-      Expr * exp = new Expr(e2->getValeur() + e1->getValeur());
+      e2 = automate.popSymbol();       // E de gauche
+      exp = new Expr(e2->getValeur() + e1->getValeur());
       automate.reduction(exp, 3 /* 3 symboles à dépiler */);
       break;
 
@@ -160,23 +161,8 @@ bool E7::transition(Automate& automate, Symbole* s) {
       automate.decalage(s, new E5);
       break;
 
-    case CLOSEPAR:
-      Entier * e1 = automate.popSymbol(); // E de droite
-      automate.popAndDestroySymbol();  // +
-      Entier * e2 = automate.popSymbol(); // E de gauche
-      Expr * exp = new Expr(e2->getValeur() + e1->getValeur());
-      automate.reduction(exp, 3 /* 3 symboles à dépiler */);
-      break;
-
-    case FIN:
-      Entier * e1 = automate.popSymbol(); // E de droite
-      automate.popAndDestroySymbol();  // +
-      Entier * e2 = automate.popSymbol(); // E de gauche
-      Expr * exp = new Expr(e2->getValeur() + e1->getValeur());
-      automate.reduction(exp, 3 /* 3 symboles à dépiler */);
-      break;
-
     default:
+      automate.decalage(new Symbole(ERREUR, false), nullptr);
       return true;
   }
   return false;
@@ -184,40 +170,24 @@ bool E7::transition(Automate& automate, Symbole* s) {
 
 bool E8::transition(Automate& automate, Symbole* s) {
   switch (*s) {
+    Entier* e1;
+    Entier* e2;
+    Expr* exp;
+
     // Règle 3 : E -> E * E
     case PLUS:
-      Entier * e1 = automate.popSymbol(); // E de droite
-      automate.popAndDestroySymbol();  // *
-      Entier * e2 = automate.popSymbol(); // E de gauche
-      Expr * exp = new Expr(e2->getValeur() * e1->getValeur());
-      automate.reduction(exp, 3 /* 3 symboles à dépiler */);
-      break;
-
     case MULT:
-      Entier * e1 = automate.popSymbol(); // E de droite
-      automate.popAndDestroySymbol();  // *
-      Entier * e2 = automate.popSymbol(); // E de gauche
-      Expr * exp = new Expr(e2->getValeur() * e1->getValeur());
-      automate.reduction(exp, 3 /* 3 symboles à dépiler */);      
-      break;
-
     case CLOSEPAR:
-      Entier * e1 = automate.popSymbol(); // E de droite
-      automate.popAndDestroySymbol();  // *
-      Entier * e2 = automate.popSymbol(); // E de gauche
-      Expr * exp = new Expr(e2->getValeur() * e1->getValeur());
-      automate.reduction(exp, 3 /* 3 symboles à dépiler */);
-      break;
-
     case FIN:
-      Entier * e1 = automate.popSymbol(); // E de droite
+      e1 = automate.popSymbol();       // E de droite
       automate.popAndDestroySymbol();  // *
-      Entier * e2 = automate.popSymbol(); // E de gauche
-      Expr * exp = new Expr(e2->getValeur() * e1->getValeur());
+      e2 = automate.popSymbol();       // E de gauche
+      exp = new Expr(e2->getValeur() * e1->getValeur());
       automate.reduction(exp, 3 /* 3 symboles à dépiler */);
       break;
 
     default:
+      automate.decalage(new Symbole(ERREUR, false), nullptr);
       return true;
   }
   return false;
@@ -225,40 +195,23 @@ bool E8::transition(Automate& automate, Symbole* s) {
 
 bool E9::transition(Automate& automate, Symbole* s) {
   switch (*s) {
+    Entier* e;
+    Expr* exp;
+
     // Règle 4 : E -> ( E )
     case PLUS:
-      automate.popAndDestroySymbol();  // )
-      Entier * e = automate.popSymbol(); // E
-      automate.popAndDestroySymbol();  // (
-      Expr * exp = new Expr(e->getValeur());
-      automate.reduction(exp, 3 /* 3 symboles à dépiler */);
-      break;
-
     case MULT:
-      automate.popAndDestroySymbol();  // )
-      Entier * e = automate.popSymbol(); // E
-      automate.popAndDestroySymbol();  // (
-      Expr * exp = new Expr(e->getValeur());
-      automate.reduction(exp, 3 /* 3 symboles à dépiler */);
-      break;
-
     case CLOSEPAR:
-      automate.popAndDestroySymbol();  // )
-      Entier * e = automate.popSymbol(); // E
-      automate.popAndDestroySymbol();  // (
-      Expr * exp = new Expr(e->getValeur());
-      automate.reduction(exp, 3 /* 3 symboles à dépiler */);
-      break;
-
     case FIN:
       automate.popAndDestroySymbol();  // )
-      Entier * e = automate.popSymbol(); // E
+      e = automate.popSymbol();        // E
       automate.popAndDestroySymbol();  // (
-      Expr * exp = new Expr(e->getValeur());
+      exp = new Expr(e->getValeur());
       automate.reduction(exp, 3 /* 3 symboles à dépiler */);
       break;
 
     default:
+      automate.decalage(new Symbole(ERREUR, false), nullptr);
       return true;
   }
   return false;

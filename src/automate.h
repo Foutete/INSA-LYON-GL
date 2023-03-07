@@ -10,7 +10,7 @@ class State;
 class Automate {
  public:
   void decalage(Symbole* s, State* state);
-  void reduction(Symbole* s, State* state);
+  void reduction(Symbole* s, int n);
   Automate(Lexer * lexer);
 
  protected:

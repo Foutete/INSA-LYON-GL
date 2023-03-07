@@ -54,16 +54,16 @@ bool E2::transition(Automate& automate, Symbole* s) {
 bool E3::transition(Automate& automate, Symbole* s) {
   switch (*s) {
     case PLUS:
-      automate.reduction(s, new E5);
+      automate.reduction(s, 0);
       break;
     case MULT:
-      automate.reduction(s, new E5);
+      automate.reduction(s, 0);
       break;
     case CLOSEPAR:
-      automate.reduction(s, new E5);
+      automate.reduction(s, 0);
       break;
     case FIN:
-      automate.reduction(s, new E5);
+      automate.reduction(s, 0);
       break;
   }
   return false;
@@ -111,16 +111,16 @@ bool E6::transition(Automate& automate, Symbole* s) {
 bool E7::transition(Automate& automate, Symbole* s) {
   switch (*s) {
     case PLUS:
-      automate.reduction(s, new E2);
+      automate.reduction(s, 0);
       break;
     case MULT:
       automate.decalage(s, new E5);
       break;
     case CLOSEPAR:
-      automate.reduction(s, new E2);
+      automate.reduction(s, 0);
       break;
     case FIN:
-      automate.reduction(s, new E2);
+      automate.reduction(s, 0);
       break;
   }
   return false;
@@ -129,16 +129,16 @@ bool E7::transition(Automate& automate, Symbole* s) {
 bool E8::transition(Automate& automate, Symbole* s) {
   switch (*s) {
     case PLUS:
-      automate.reduction(s, new E3);
+      automate.reduction(s, 0);
       break;
     case MULT:
-      automate.reduction(s, new E3);
+      automate.reduction(s, 0);
       break;
     case CLOSEPAR:
-      automate.reduction(s, new E3);
+      automate.reduction(s, 0);
       break;
     case FIN:
-      automate.reduction(s, new E3);
+      automate.reduction(s, 0);
       break;
   }
   return false;
@@ -147,16 +147,16 @@ bool E8::transition(Automate& automate, Symbole* s) {
 bool E9::transition(Automate& automate, Symbole* s) {
   switch (*s) {
     case PLUS:
-      automate.reduction(s, new E4);
+      automate.reduction(s, 0);
       break;
     case MULT:
-      automate.reduction(s, new E4);
+      automate.reduction(s, 0);
       break;
     case CLOSEPAR:
-      automate.reduction(s, new E4);
+      automate.reduction(s, 0);
       break;
     case FIN:
-      automate.reduction(s, new E4);
+      automate.reduction(s, 0);
       break;
   }
   return false;

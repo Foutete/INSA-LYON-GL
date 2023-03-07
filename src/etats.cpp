@@ -1,5 +1,7 @@
 #include "etats.h"
 
+#include <unistd.h>
+
 #include <iostream>
 
 E0::E0() : State("E0") {}
@@ -22,6 +24,11 @@ bool E0::transition(Automate& automate, Symbole* s) {
     case OPENPAR:
       automate.decalage(s, new E2);
       break;
+
+    case EXPR:
+      automate.decalage(s, new E1);
+      break;
+
     default:
       automate.decalage(new Symbole(ERREUR, false), nullptr);
       return true;
@@ -39,8 +46,11 @@ bool E1::transition(Automate& automate, Symbole* s) {
       automate.decalage(s, new E5);
       break;
 
-    case FIN:
-      cout << "Fin";
+    case FIN:  // Accepter
+      cout << "Fin" << std::endl;
+      return true;
+      break;
+
     default:
       automate.decalage(new Symbole(ERREUR, false), nullptr);
       return true;
@@ -57,6 +67,11 @@ bool E2::transition(Automate& automate, Symbole* s) {
     case OPENPAR:
       automate.decalage(s, new E2);
       break;
+
+    case EXPR:
+      automate.decalage(s, new E6);
+      break;
+
     default:
       automate.decalage(new Symbole(ERREUR, false), nullptr);
       return true;
@@ -96,6 +111,10 @@ bool E4::transition(Automate& automate, Symbole* s) {
       automate.decalage(s, new E2);
       break;
 
+    case EXPR:
+      automate.decalage(s, new E7);
+      break;
+
     default:
       automate.decalage(new Symbole(ERREUR, false), nullptr);
       return true;
@@ -112,6 +131,11 @@ bool E5::transition(Automate& automate, Symbole* s) {
     case OPENPAR:
       automate.decalage(s, new E2);
       break;
+
+    case EXPR:
+      automate.decalage(s, new E8);
+      break;
+
     default:
       automate.decalage(new Symbole(ERREUR, false), nullptr);
       return true;
